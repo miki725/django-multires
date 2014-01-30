@@ -1,0 +1,11 @@
+coverage
+django
+django-auxilium==dev
+django-dirtyfields
+django-nose
+django-vanilla-views
+mock
+pillow
+south<2
+tox
+six
