@@ -1,6 +1,7 @@
 from __future__ import unicode_literals, print_function
 import os
 import six
+from django.conf import settings
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db.models.fields.files import ImageField, ImageFieldFile
 from django.db import models
@@ -106,7 +107,11 @@ class LazyMultiresImageField(ImageField):
 
         def f(instance, filename):
             ext = filename.split('.')[-1]
-            filename = '{0}.{1}'.format(uuid4().hex, ext)
+            if getattr(settings, 'MULTIRES_LAZY_ENTROPY', True):
+                uuid = getattr(instance, self.uuid_field, uuid4().hex)
+            else:
+                uuid = uuid4().hex
+            filename = '{0}.{1}'.format(uuid, ext)
             return os.path.join(path, filename)
 
         return f
