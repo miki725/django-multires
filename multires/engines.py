@@ -107,6 +107,11 @@ class DefaultEngine(BaseEngine):
                 'quality': self.recipe.quality,
             })
 
+        # normalize mode
+        if self.recipe.file_type == 'jpeg':
+            if image.mode not in ['RGB', 'RGBA']:
+                image = image.convert('RGB')
+
         image.save(fid, format=file_type, **save_kwargs)
 
         return fid
